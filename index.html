@@ -372,7 +372,7 @@
         <div class="ip-card-wrapper" id="ip" onclick="copyIP()">
             <div class="ip-info">
                 <div class="ip-label">Szerver IP Cím (Kattints a másoláshoz)</div>
-                <div class="ip-address">79.122.15.79</div>
+                <div class="ip-address">aetheriamc.duckdns.org</div>
             </div>
             <button class="copy-btn">
                 <i class="fa-regular fa-copy" id="copyIcon"></i>
@@ -516,10 +516,10 @@
             const playerCountEl = document.getElementById('playerCount');
             const avatarsContainer = document.querySelector('.players-avatars');
             
-            // A te saját nyilvános IP címed
-            const publicIP = '79.122.15.79';
+            // A te saját DuckDNS címed
+            const serverDomain = 'aetheriamc.duckdns.org';
 
-            fetch(`https://api.mcsrvstat.us/2/${publicIP}`)
+            fetch(`https://api.mcsrvstat.us/2/${serverDomain}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.online) {
@@ -552,7 +552,7 @@
 
         // IP másoló funkció
         function copyIP() {
-            const ipText = "79.122.15.79";
+            const ipText = "aetheriamc.duckdns.org";
             const copyText = document.getElementById("copyText");
             const copyIcon = document.getElementById("copyIcon");
             
