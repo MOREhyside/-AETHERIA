@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AETHERIA | Ultimate Minecraft Experience</title>
+    <title>AETHERIA BOT | Ultimate AI & Discord Companion</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap');
@@ -11,7 +11,7 @@
         :root {
             --bg: #030712;
             --surface: #0b1120;
-            --surface-glass: rgba(11, 17, 32, 0.7);
+            --surface-glass: rgba(11, 17, 32, 0.75);
             --primary: #38bdf8;
             --accent: #818cf8;
             --success: #10b981;
@@ -20,6 +20,7 @@
             --muted: #94a3b8;
             --border: rgba(255, 255, 255, 0.08);
             --glow: 0 0 40px rgba(56, 189, 248, 0.15);
+            --discord: #5865F2;
         }
 
         * {
@@ -63,7 +64,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 1.25rem 6%;
-            background: rgba(3, 7, 18, 0.8);
+            background: rgba(3, 7, 18, 0.85);
             backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border);
             z-index: 100;
@@ -98,17 +99,20 @@
         .nav-links a:hover, .nav-links a.active { color: var(--primary); }
 
         .nav-cta {
-            background: rgba(56, 189, 248, 0.1);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            color: var(--primary);
+            background: var(--discord);
+            border: 1px solid rgba(88, 101, 242, 0.4);
+            color: #fff;
             padding: 0.6rem 1.25rem;
             border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        .nav-cta:hover { background: var(--primary); color: var(--bg); box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); }
+        .nav-cta:hover { background: #4752C4; box-shadow: 0 0 20px rgba(88, 101, 242, 0.4); }
 
         /* Hero */
         header {
@@ -146,28 +150,45 @@
         h1 span { background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 30px rgba(56, 189, 248, 0.3)); }
         .hero-desc { color: var(--muted); font-size: 1.15rem; max-width: 650px; line-height: 1.6; margin-bottom: 2.5rem; }
 
-        /* IP Card */
-        .ip-card-wrapper {
+        .hero-buttons {
             display: flex;
             gap: 1rem;
-            background: var(--surface-glass);
-            border: 1px solid var(--border);
-            backdrop-filter: blur(20px);
-            padding: 0.75rem 0.75rem 0.75rem 1.5rem;
-            border-radius: 20px;
-            box-shadow: var(--glow);
-            align-items: center;
-            max-width: 480px;
-            width: 100%;
-            transition: border-color 0.3s, transform 0.3s;
-            cursor: pointer;
+            justify-content: center;
+            flex-wrap: wrap;
         }
-        .ip-card-wrapper:hover { border-color: rgba(56, 189, 248, 0.3); transform: translateY(-2px); }
-        .ip-info { text-align: left; flex-grow: 1; }
-        .ip-label { font-size: 0.7rem; text-transform: uppercase; color: var(--muted); font-weight: 700; letter-spacing: 1px; margin-bottom: 0.15rem; }
-        .ip-address { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 500; color: var(--primary); }
-        .copy-btn { background: var(--primary); color: var(--bg); border: none; padding: 0.9rem 1.5rem; border-radius: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s; }
-        .copy-btn:hover { background: #7dd3fc; box-shadow: 0 0 20px rgba(56, 189, 248, 0.5); }
+
+        .btn-discord {
+            background: var(--discord);
+            color: white;
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(88, 101, 242, 0.3);
+        }
+        .btn-discord:hover { background: #4752C4; box-shadow: 0 0 30px rgba(88, 101, 242, 0.5); transform: translateY(-2px); }
+
+        .btn-secondary {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 0.9rem 2rem;
+            border-radius: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .btn-secondary:hover { background: rgba(56, 189, 248, 0.2); transform: translateY(-2px); }
 
         /* Tartalmi Konténerek / Szekciók */
         .section-container {
@@ -211,50 +232,77 @@
         .feature-card h3 { font-size: 1.35rem; font-weight: 700; margin-bottom: 0.75rem; }
         .feature-card p { color: var(--muted); line-height: 1.6; font-size: 0.95rem; }
 
-        /* Online Játékosok sáv */
-        .live-players-card {
-            background: var(--surface-glass);
-            border: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
+        /* Élő Statisztikák Sáv */
+        .stats-banner {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 1.5rem;
             margin-top: 3rem;
         }
-        .players-header { display: flex; justify-content: space-between; align-items: center; }
-        .players-avatars { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-        .player-badge {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
-            padding: 0.4rem 0.8rem;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-        .player-badge img { width: 22px; height: 22px; border-radius: 4px; }
-
-        /* Ranglétra / Leaderboard */
-        .leaderboard-table {
-            width: 100%;
-            border-collapse: collapse;
+        .stat-card {
             background: var(--surface-glass);
             border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
             border-radius: 20px;
+            text-align: center;
+        }
+        .stat-value { font-size: 2.2rem; font-weight: 800; color: var(--primary); margin-bottom: 0.25rem; font-family: 'JetBrains Mono', monospace; }
+        .stat-label { color: var(--muted); font-size: 0.9rem; font-weight: 600; }
+
+        /* Parancsok Listája (Commands) */
+        .commands-container {
+            background: var(--surface-glass);
+            border: 1px solid var(--border);
+            border-radius: 24px;
             overflow: hidden;
             backdrop-filter: blur(10px);
+            max-width: 900px;
+            margin: 0 auto;
         }
-        .leaderboard-table th, .leaderboard-table td { padding: 1.25rem 1.5rem; text-align: left; }
-        .leaderboard-table th { background: rgba(255, 255, 255, 0.02); color: var(--muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); }
-        .leaderboard-table tr:not(:last-child) td { border-bottom: 1px solid var(--border); }
-        .leaderboard-table tr:hover td { background: rgba(255, 255, 255, 0.02); }
-        .rank-num { font-weight: 800; color: var(--primary); }
+        .commands-search {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.01);
+        }
+        .commands-search i { color: var(--muted); font-size: 1.1rem; }
+        .commands-search input {
+            background: transparent;
+            border: none;
+            color: var(--text);
+            font-size: 1rem;
+            width: 100%;
+            outline: none;
+        }
+        .commands-search input::placeholder { color: var(--muted); }
+        
+        .command-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+        .command-item:last-child { border-bottom: none; }
+        .command-item:hover { background: rgba(255, 255, 255, 0.02); }
+        .command-name { font-family: 'JetBrains Mono', monospace; color: var(--primary); font-weight: 600; font-size: 1.05rem; }
+        .command-desc { color: var(--muted); font-size: 0.95rem; margin-top: 0.2rem; }
+        .command-tag {
+            background: rgba(129, 140, 248, 0.1);
+            border: 1px solid rgba(129, 140, 248, 0.2);
+            color: var(--accent);
+            padding: 0.3rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
 
-        /* Szabályzat Akordeon */
+        /* GYIK Akordeon */
         .accordion { display: flex; flex-direction: column; gap: 1rem; max-width: 800px; margin: 0 auto; }
         .accordion-item {
             background: var(--surface-glass);
@@ -283,41 +331,21 @@
             color: var(--muted);
             line-height: 1.6;
         }
-        .accordion-item.active .accordion-content { padding: 0 1.5rem 1.5rem 1.5rem; max-height: 200px; }
+        .accordion-item.active .accordion-content { padding: 0 1.5rem 1.5rem 1.5rem; max-height: 250px; }
         .accordion-item.active .accordion-header i { transform: rotate(180deg); }
 
-        /* Szavazás & Discord Grid */
-        .dual-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-        .card-box {
-            background: var(--surface-glass);
-            border: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-            padding: 2.5rem;
-            border-radius: 24px;
+        /* CTA Szekció felhívás */
+        .cta-banner {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(88, 101, 242, 0.15));
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 30px;
+            padding: 4rem 2rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-        .card-box i.main-icon { font-size: 3rem; color: var(--primary); margin-bottom: 1.25rem; }
-        .card-box h3 { font-size: 1.4rem; margin-bottom: 0.75rem; font-weight: 700; }
-        .card-box p { color: var(--muted); margin-bottom: 2rem; font-size: 0.95rem; line-height: 1.6; }
-        .btn-action {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            background: var(--primary);
-            color: var(--bg);
-            padding: 0.9rem 2rem;
-            border-radius: 14px;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        .btn-action:hover { background: #7dd3fc; box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); }
-        .btn-action.discord { background: #5865F2; color: #fff; }
-        .btn-action.discord:hover { background: #4752C4; box-shadow: 0 0 20px rgba(88, 101, 242, 0.4); }
+        .cta-banner h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; }
+        .cta-banner p { color: var(--muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto 2.5rem auto; line-height: 1.6; }
 
         /* Footer */
         footer {
@@ -333,8 +361,8 @@
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            .ip-card-wrapper { flex-direction: column; width: 100%; padding: 1rem; }
-            .copy-btn { width: 100%; justify-content: center; }
+            .hero-buttons { flex-direction: column; width: 100%; }
+            .btn-discord, .btn-secondary { width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -346,232 +374,204 @@
     <!-- Navigáció -->
     <nav>
         <div class="logo">
-            <i class="fa-solid fa-cube"></i>
-            <span>AETHERIA</span>
+            <i class="fa-solid fa-robot"></i>
+            <span>AETHERIA AI</span>
         </div>
         <ul class="nav-links">
             <li><a href="#" class="active">Kezdőlap</a></li>
-            <li><a href="#features">Jellemzők</a></li>
-            <li><a href="#leaderboard">Ranglétra</a></li>
-            <li><a href="#rules">Szabályzat</a></li>
-            <li><a href="#community">Közösség</a></li>
+            <li><a href="#features">Funkciók</a></li>
+            <li><a href="#commands">Parancsok</a></li>
+            <li><a href="#faq">GYIK</a></li>
         </ul>
-        <a href="#ip" class="nav-cta"><i class="fa-solid fa-gamepad"></i> Csatlakozás</a>
+        <a href="https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID" target="_blank" class="nav-cta">
+            <i class="fa-brands fa-discord"></i> Add to Discord
+        </a>
     </nav>
 
     <!-- Hero Szekció -->
     <header>
         <div class="server-status-pill">
             <div class="status-dot"></div>
-            <span class="status-text"><span id="playerCount">0</span> / 20 Játékos Online</span>
+            <span class="status-text">Minden rendszer stabil és online (99.9% uptime)</span>
         </div>
         
-        <h1>A tökéletes <span>Minecraft</span> túlélő élmény</h1>
-        <p class="hero-desc">Merülj el egy lag-mentes, prémium környezetben, ahol a közösség, az egyedi rendszerek és a maximális játékélmény áll az első helyen.</p>
+        <h1>A legfejlettebb <span>AI asszisztens</span> a Discord szerveredhez</h1>
+        <p class="hero-desc">Turbózd fel a közösségedet intelligens moderációval, valós idejű GPT válaszokkal, automatikus összefoglalókkal és egyedi interaktív funkciókkal.</p>
 
-        <div class="ip-card-wrapper" id="ip" onclick="copyIP()">
-            <div class="ip-info">
-                <div class="ip-label">Szerver IP Cím (Kattints a másoláshoz)</div>
-                <div class="ip-address">aetheriamc.duckdns.org</div>
-            </div>
-            <button class="copy-btn">
-                <i class="fa-regular fa-copy" id="copyIcon"></i>
-                <span id="copyText">Másolás</span>
-            </button>
+        <div class="hero-buttons">
+            <a href="https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID" target="_blank" class="btn-discord">
+                <i class="fa-brands fa-discord"></i> Add to Discord
+            </a>
+            <a href="#commands" class="btn-secondary">
+                <i class="fa-solid fa-terminal"></i> Parancsok megtekintése
+            </a>
         </div>
     </header>
 
-    <!-- Fő Jellemzők -->
+    <!-- Élő Statisztikák Sáv -->
+    <section class="section-container" style="padding-top: 0; padding-bottom: 2rem;">
+        <div class="stats-banner">
+            <div class="stat-card">
+                <div class="stat-value" id="serverCount">1,420+</div>
+                <div class="stat-label">Aktív Szerver</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="userCount">350,000+</div>
+                <div class="stat-label">Felhasználó</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">12.4M</div>
+                <div class="stat-label">Feldolgozott Üzenet</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0.12s</div>
+                <div class="stat-label">Átlagos Válaszidő</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fő Funkciók -->
     <section class="section-container" id="features">
-        <h2 class="section-title">Miért válassz minket?</h2>
-        <p class="section-subtitle">A legmodernebb technológia a tökéletes szórakozásért</p>
+        <h2 class="section-title">Fő Funkciók</h2>
+        <p class="section-subtitle">Minden, amire a modern Discord közösségednek szüksége van</p>
 
         <div class="features-grid">
             <div class="feature-card">
-                <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
-                <h3>Villámgyors Teljesítmény</h3>
-                <p>Egyedileg optimalizált PaperMC mag, dedikált 24/7-es hardveren, hogy a TPS folyamatosan 20.0 maradjon.</p>
+                <div class="card-icon"><i class="fa-solid fa-brain"></i></div>
+                <h3>Intelligens AI Chat</h3>
+                <p>Beszélgess közvetlenül a bot-tal vagy említsd meg a csatornákon. Kontextus-alapú, pontos válaszokat ad fejlett LLM modellekkel.</p>
             </div>
             <div class="feature-card">
-                <div class="card-icon"><i class="fa-solid fa-shield-cat"></i></div>
-                <h3>Fejlett Területvédelem</h3>
-                <p>Biztonságban tudhatod az építményeidet a modern láda- és területvédelmi rendszereinknek köszönhetően.</p>
+                <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <h3>Automatikus Moderáció</h3>
+                <p>AI-alapú szűrés, amely azonnal kiszűri a spamet, a toxikus viselkedést és a kéretlen hivatkozásokat, mielőtt bárki látná.</p>
             </div>
             <div class="feature-card">
-                <div class="card-icon"><i class="fa-solid fa-gem"></i></div>
-                <h3>Egyedi Gazdaság</h3>
-                <p>Játékosok által vezérelt piac, rangok küldetésekkel, és izgalmas, egyedi itemek várnak rád.</p>
-            </div>
-        </div>
-
-        <!-- Élő Játékosok kártya -->
-        <div class="live-players-card">
-            <div class="players-header">
-                <h3 style="font-size: 1.1rem; font-weight: 700;"><i class="fa-solid fa-users" style="color: var(--primary); margin-right: 8px;"></i> Jelenleg online játékosok</h3>
-                <span style="font-size: 0.85rem; color: var(--success); font-weight: 600;">Élő adat</span>
-            </div>
-            <div class="players-avatars">
-                <span style="color: var(--muted); font-size: 0.9rem;">Adatok betöltése...</span>
+                <div class="card-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
+                <h3>Gyors Összefoglalók</h3>
+                <p>Lekövethetetlenül sok üzenet gyűlt össze míg offline voltál? Egyetlen paranccsal összefoglalja az elmúlt órák beszélgetéseit.</p>
             </div>
         </div>
     </section>
 
-    <!-- Top Ranglétra (Leaderboard) -->
-    <section class="section-container" id="leaderboard">
-        <h2 class="section-title">Szerver Ranglétra</h2>
-        <p class="section-subtitle">A legaktívabb játékosaink ezen a héten</p>
+    <!-- Parancsok Listája -->
+    <section class="section-container" id="commands">
+        <h2 class="section-title">Parancsok Listája</h2>
+        <p class="section-subtitle">Ismerd meg a legfontosabb slash parancsokat</p>
 
-        <table class="leaderboard-table">
-            <thead>
-                <tr>
-                    <th>Helyezés</th>
-                    <th>Játékos</th>
-                    <th>Szint</th>
-                    <th>Játszott idő</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="rank-num">#1</td>
-                    <td><img src="https://minotar.net/avatar/PRBaelynt/20.png" style="vertical-align: middle; border-radius: 4px; margin-right: 8px;"> PRBaelynt</td>
-                    <td><span style="color: var(--warning); font-weight: 700;">84. szint</span></td>
-                    <td>142 óra</td>
-                </tr>
-                <tr>
-                    <td class="rank-num">#2</td>
-                    <td><img src="https://minotar.net/avatar/Alex/20.png" style="vertical-align: middle; border-radius: 4px; margin-right: 8px;"> Alex_PRO</td>
-                    <td><span style="color: var(--warning); font-weight: 700;">79. szint</span></td>
-                    <td>128 óra</td>
-                </tr>
-                <tr>
-                    <td class="rank-num">#3</td>
-                    <td><img src="https://minotar.net/avatar/Builder_99/20.png" style="vertical-align: middle; border-radius: 4px; margin-right: 8px;"> Builder_99</td>
-                    <td><span style="color: var(--warning); font-weight: 700;">71. szint</span></td>
-                    <td>110 óra</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="commands-container">
+            <div class="commands-search">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" id="commandSearch" placeholder="Keresés a parancsok között (pl. /ai, /summarize)..." onkeyup="filterCommands()">
+            </div>
+            <div id="commandList">
+                <div class="command-item">
+                    <div>
+                        <div class="command-name">/ai &lt;kérdés&gt;</div>
+                        <div class="command-desc">Felteszel egy kérdést a mesterséges intelligenciának, és azonnal választ kapsz.</div>
+                    </div>
+                    <span class="command-tag">Általános</span>
+                </div>
+                <div class="command-item">
+                    <div>
+                        <div class="command-name">/summarize &lt;órák&gt;</div>
+                        <div class="command-desc">Összefoglalja a megadott óra alatt lezajlott csatorna beszélgetéseit.</div>
+                    </div>
+                    <span class="command-tag">Funkció</span>
+                </div>
+                <div class="command-item">
+                    <div>
+                        <div class="command-name">/image &lt;prompt&gt;</div>
+                        <div class="command-desc">Lenyűgöző képeket generál a megadott leírás alapján DALL-E technológiával.</div>
+                    </div>
+                    <span class="command-tag">Kreatív</span>
+                </div>
+                <div class="command-item">
+                    <div>
+                        <div class="command-name">/translate &lt;nyelv&gt; &lt;szöveg&gt;</div>
+                        <div class="command-desc">Professzionális fordítást végez több mint 50 különböző nyelvre.</div>
+                    </div>
+                    <span class="command-tag">Eszköz</span>
+                </div>
+                <div class="command-item">
+                    <div>
+                        <div class="command-name">/settings</div>
+                        <div class="command-desc">Szerver-specifikus beállítások, moderációs szintek és AI jogok kezelése.</div>
+                    </div>
+                    <span class="command-tag">Admin</span>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <!-- Szabályzat Akordeon -->
-    <section class="section-container" id="rules">
-        <h2 class="section-title">Fontos Szabályzat</h2>
-        <p class="section-subtitle">A kulturált és fair játékkörnyezet alapjai</p>
+    <!-- GYIK Akordeon -->
+    <section class="section-container" id="faq">
+        <h2 class="section-title">Gyakran Ismételt Kérdések</h2>
+        <p class="section-subtitle">Minden, amit a bot használatáról tudni érdemes</p>
 
         <div class="accordion">
             <div class="accordion-item">
                 <div class="accordion-header" onclick="toggleAccordion(this)">
-                    <span>1. Általános magatartás és Chat szabályok</span>
+                    <span>Hogyan adhatom hozzá a botot a szerveremhez?</span>
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
                 <div class="accordion-content">
-                    Tilos a trágár, kirekesztő vagy gyűlölködő beszéd a chatben. A spammelés, floodolás és a reklámozás azonnali némítással (mute) vagy kitiltással jár.
+                    Kattints bármelyik "Add to Discord" gombra az oldalon, jelentkezz be a Discord fiókoddal, válaszd ki a szervert, amelyen adminisztrátori joggal rendelkezel, majd hagyd jóvá a kért engedélyeket.
                 </div>
             </div>
             <div class="accordion-item">
                 <div class="accordion-header" onclick="toggleAccordion(this)">
-                    <span>2. Építkezés és Griefelés tilalma</span>
+                    <span>Ingyenes a bot használata?</span>
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
                 <div class="accordion-content">
-                    Más játékos területére építkezni, ládákat fosztogatni vagy építményeket rongálni szigorúan tilos! Használd a védelmi rendszereket (Claim).
+                    Igen! A legtöbb alapvető funkció (AI chat, moderáció, összefoglalók) teljesen ingyenesen használható minden közösségi szerveren. Prémium csomagjaink extra kvótákat és haladó funkciókat kínálnak.
                 </div>
             </div>
             <div class="accordion-item">
                 <div class="accordion-header" onclick="toggleAccordion(this)">
-                    <span>3. Csalások és illegális módosítások</span>
+                    <span>Szükséges bármilyen külső program telepítése?</span>
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
                 <div class="accordion-content">
-                    Bármilyen külső segédprogram (Hack kliens, X-ray texture pack, makrók, automata kattintók) használata végleges kitiltást von maga után.
+                    Nem szükséges semmit letöltened vagy telepítened. A bot felhőalapon fut, így azonnal készen áll a használatra, miután meghívtad a szerveredre.
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Szavazás & Közösség (Dual Grid) -->
-    <section class="section-container" id="community">
-        <div class="dual-grid">
-            <div class="card-box">
-                <i class="fa-solid fa-check-to-slot main-icon"></i>
-                <h3>Támogass minket szavazással</h3>
-                <p>Szavazz a szerverre naponta, és értékes in-game jutalmakat (kulcsok, rangok, pénz) kapsz jutalmul automatikusan!</p>
-                <a href="#" class="btn-action"><i class="fa-solid fa-vote-yea"></i> Szavazok most</a>
-            </div>
-            <div class="card-box">
-                <i class="fa-brands fa-discord main-icon" style="color: #5865F2;"></i>
-                <h3>Csatlakozz a Discordhoz</h3>
-                <p>Lépj be a közösségi szerverünkre, kérj segítséget az adminoktól, kereskedj másokkal vagy beszélgess a barátaiddal!</p>
-                <a href="#" class="btn-action discord"><i class="fa-brands fa-discord"></i> Discord Meghívó</a>
-            </div>
+    <!-- Call to Action Banner -->
+    <section class="section-container">
+        <div class="cta-banner">
+            <h2>Készen állsz a fejlesztésre?</h2>
+            <p>Csatlakozz több ezer elégedett szerverhez, és emeld új szintre a Discord közösséged élményét még ma.</p>
+            <a href="https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID" target="_blank" class="btn-discord" style="display: inline-flex; margin: 0 auto;">
+                <i class="fa-brands fa-discord"></i> Add to Discord - Ingyenesen
+            </a>
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2026 AetheriaMC. Minden jog fenntartva. Nem hivatalos Mojang/Minecraft termék.</p>
+        <p>&copy; 2026 Aetheria AI. Minden jog fenntartva. Nem kapcsolódik a Discord Inc.-hez.</p>
     </footer>
 
     <script>
-        function updateServerStatus() {
-            const playerCountEl = document.getElementById('playerCount');
-            const avatarsContainer = document.querySelector('.players-avatars');
-            
-            const publicDomain = 'aetheriamc.duckdns.org';
+        // Parancs kereső funkció
+        function filterCommands() {
+            const input = document.getElementById('commandSearch').value.toLowerCase();
+            const items = document.querySelectorAll('.command-item');
 
-            fetch(`https://api.mcsrvstat.us/3/${publicDomain}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.online) {
-                        playerCountEl.innerText = data.players.online || 0;
-
-                        if (data.players && data.players.list && Array.isArray(data.players.list) && data.players.list.length > 0) {
-                            avatarsContainer.innerHTML = data.players.list.map(player => {
-                                // Kezeljük mind a sima stringet, mind az objektum formátumot (pl. name tulajdonsággal)
-                                const playerName = typeof player === 'string' ? player : (player.name || player.username || 'Játékos');
-                                return `
-                                    <div class="player-badge">
-                                        <img src="https://minotar.net/avatar/${playerName}/22.png" alt="${playerName}"> 
-                                        ${playerName}
-                                    </div>
-                                `;
-                            }).join('');
-                        } else if (data.players && data.players.online > 0) {
-                            avatarsContainer.innerHTML = `<span style="color: var(--muted); font-size: 0.9rem;">${data.players.online} játékos online (névlista rejtve)</span>`;
-                        } else {
-                            avatarsContainer.innerHTML = '<span style="color: var(--muted); font-size: 0.9rem;">Jelenleg nincsenek játékosok a szerveren.</span>';
-                        }
-                    } else {
-                        playerCountEl.innerText = '0';
-                        avatarsContainer.innerHTML = '<span style="color: #ef4444; font-size: 0.9rem;">A szerver jelenleg offline.</span>';
-                    }
-                })
-                .catch(error => {
-                    console.error('Hiba az API lekérdezésekor:', error);
-                    playerCountEl.innerText = '0';
-                    avatarsContainer.innerHTML = '<span style="color: #ef4444; font-size: 0.9rem;">Szerverstátusz nem elérhető.</span>';
-                });
-        }
-
-        updateServerStatus();
-        setInterval(updateServerStatus, 30000);
-
-        // IP másoló funkció
-        function copyIP() {
-            const ipText = "aetheriamc.duckdns.org";
-            const copyText = document.getElementById("copyText");
-            const copyIcon = document.getElementById("copyIcon");
-            
-            navigator.clipboard.writeText(ipText).then(() => {
-                copyText.innerText = "Másolva!";
-                copyIcon.className = "fa-solid fa-check";
-                setTimeout(() => {
-                    copyText.innerText = "Másolás";
-                    copyIcon.className = "fa-regular fa-copy";
-                }, 2000);
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(input)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
             });
         }
 
-        // Akordeon
+        // Akordeon kezelés
         function toggleAccordion(header) {
             const item = header.parentElement;
             const wasActive = item.classList.contains('active');
@@ -584,6 +584,19 @@
                 item.classList.add('active');
             }
         }
+
+        // Élő számláló szimuláció a dinamikusabb hatásért
+        function animateStats() {
+            const serverCountEl = document.getElementById('serverCount');
+            const userCountEl = document.getElementById('userCount');
+            
+            let servers = 1420 + Math.floor(Math.random() * 5);
+            let users = 350000 + Math.floor(Math.random() * 120);
+            
+            serverCountEl.innerText = servers.toLocaleString() + '+';
+            userCountEl.innerText = users.toLocaleString() + '+';
+        }
+        setInterval(animateStats, 10000);
 
         // Háttér részecske animáció
         const canvas = document.getElementById('particles');
