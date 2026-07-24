@@ -524,16 +524,19 @@
                     if (data.online) {
                         playerCountEl.innerText = data.players.online || 0;
 
-                        // Jelenleg online játékosok listájának feldolgozása objektum/tömb hibák nélkül
                         if (data.players && data.players.list && Array.isArray(data.players.list) && data.players.list.length > 0) {
-                            avatarsContainer.innerHTML = data.players.list.map(playerName => `
-                                <div class="player-badge">
-                                    <img src="https://minotar.net/avatar/${playerName}/22.png" alt="${playerName}"> 
-                                    ${playerName}
-                                </div>
-                            `).join('');
+                            avatarsContainer.innerHTML = data.players.list.map(player => {
+                                // Kezeljük mind a sima stringet, mind az objektum formátumot (pl. name tulajdonsággal)
+                                const playerName = typeof player === 'string' ? player : (player.name || player.username || 'Játékos');
+                                return `
+                                    <div class="player-badge">
+                                        <img src="https://minotar.net/avatar/${playerName}/22.png" alt="${playerName}"> 
+                                        ${playerName}
+                                    </div>
+                                `;
+                            }).join('');
                         } else if (data.players && data.players.online > 0) {
-                            avatarsContainer.innerHTML = `<span style="color: var(--muted); font-size: 0.9rem;">${data.players.online} játékos online (névlista nem rejtett)</span>`;
+                            avatarsContainer.innerHTML = `<span style="color: var(--muted); font-size: 0.9rem;">${data.players.online} játékos online (névlista rejtve)</span>`;
                         } else {
                             avatarsContainer.innerHTML = '<span style="color: var(--muted); font-size: 0.9rem;">Jelenleg nincsenek játékosok a szerveren.</span>';
                         }
