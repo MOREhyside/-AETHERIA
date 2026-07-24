@@ -516,66 +516,37 @@
             const playerCountEl = document.getElementById('playerCount');
             const avatarsContainer = document.querySelector('.players-avatars');
             
-            // AetheriaMC DuckDNS domain lekérdezése
             const publicDomain = 'aetheriamc.duckdns.org';
 
-            const isLocalEnvironment = window.location.protocol === 'file:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            fetch(`https://api.mcsrvstat.us/3/${publicDomain}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.online) {
+                        playerCountEl.innerText = data.players.online || 0;
 
-            if (isLocalEnvironment) {
-                // Lokális tesztnél közvetlen lekérés, vagy ha éppen tesztelsz
-                fetch(`https://api.mcsrvstat.us/3/${publicDomain}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.online) {
-                            playerCountEl.innerText = data.players.online;
-
-                            if (data.players.list && data.players.list.length > 0) {
-                                avatarsContainer.innerHTML = data.players.list.map(playerName => `
-                                    <div class="player-badge">
-                                        <img src="https://minotar.net/avatar/${playerName}/22.png" alt="${playerName}"> 
-                                        ${playerName}
-                                    </div>
-                                `).join('');
-                            } else {
-                                avatarsContainer.innerHTML = '<span style="color: var(--muted); font-size: 0.9rem;">Jelenleg nincsenek játékosok a szerveren.</span>';
-                            }
+                        // Jelenleg online játékosok listájának feldolgozása objektum/tömb hibák nélkül
+                        if (data.players && data.players.list && Array.isArray(data.players.list) && data.players.list.length > 0) {
+                            avatarsContainer.innerHTML = data.players.list.map(playerName => `
+                                <div class="player-badge">
+                                    <img src="https://minotar.net/avatar/${playerName}/22.png" alt="${playerName}"> 
+                                    ${playerName}
+                                </div>
+                            `).join('');
+                        } else if (data.players && data.players.online > 0) {
+                            avatarsContainer.innerHTML = `<span style="color: var(--muted); font-size: 0.9rem;">${data.players.online} játékos online (névlista nem rejtett)</span>`;
                         } else {
-                            playerCountEl.innerText = '0';
-                            avatarsContainer.innerHTML = '<span style="color: #ef4444; font-size: 0.9rem;">A szerver jelenleg offline.</span>';
+                            avatarsContainer.innerHTML = '<span style="color: var(--muted); font-size: 0.9rem;">Jelenleg nincsenek játékosok a szerveren.</span>';
                         }
-                    })
-                    .catch(error => {
-                        console.error('Hiba az API lekérdezésekor:', error);
-                    });
-            } else {
-                // Éles webszerver esetén lekéri az adatot az API-tól
-                fetch(`https://api.mcsrvstat.us/3/${publicDomain}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.online) {
-                            playerCountEl.innerText = data.players.online;
-
-                            if (data.players.list && data.players.list.length > 0) {
-                                avatarsContainer.innerHTML = data.players.list.map(playerName => `
-                                    <div class="player-badge">
-                                        <img src="https://minotar.net/avatar/${playerName}/22.png" alt="${playerName}"> 
-                                        ${playerName}
-                                    </div>
-                                `).join('');
-                            } else {
-                                avatarsContainer.innerHTML = '<span style="color: var(--muted); font-size: 0.9rem;">Jelenleg nincsenek játékosok a szerveren.</span>';
-                            }
-                        } else {
-                            playerCountEl.innerText = '0';
-                            avatarsContainer.innerHTML = '<span style="color: #ef4444; font-size: 0.9rem;">A szerver jelenleg offline.</span>';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Hiba az API lekérdezésekor:', error);
+                    } else {
                         playerCountEl.innerText = '0';
-                        avatarsContainer.innerHTML = '<span style="color: #ef4444; font-size: 0.9rem;">Szerverstátusz nem elérhető.</span>';
-                    });
-            }
+                        avatarsContainer.innerHTML = '<span style="color: #ef4444; font-size: 0.9rem;">A szerver jelenleg offline.</span>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Hiba az API lekérdezésekor:', error);
+                    playerCountEl.innerText = '0';
+                    avatarsContainer.innerHTML = '<span style="color: #ef4444; font-size: 0.9rem;">Szerverstátusz nem elérhető.</span>';
+                });
         }
 
         updateServerStatus();
